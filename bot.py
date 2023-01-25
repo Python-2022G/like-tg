@@ -16,15 +16,6 @@ keyboard = [
     ]
 
 
-def get_data():
-    with open('data.json') as f:
-        data = json.loads(f.read())
-    
-    likes = data['likes']
-    dislikes = data['dislikes']
-    return likes, dislikes
-
-
 def increase_like():
     with open('data.json') as f:
         data = json.loads(f.read())
@@ -33,6 +24,7 @@ def increase_like():
         f.write('')
         f.write(json.dumps(data, indent=4))
 
+    return data['likes'], data['dislikes']
 
 def increase_dislike():
     with open('data.json') as f:
@@ -41,21 +33,20 @@ def increase_dislike():
     with open('data.json', 'w') as f:
         f.write('')
         f.write(json.dumps(data, indent=4))
+    
+    return data['likes'], data['dislikes']
 
 def start(update: Update, context: CallbackContext):
     update.message.reply_html(text="<b>Assalomu alaylum!</b>\n\n<i>like botga xush kelibsiz!!</i>", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 def like(update: Update, context: CallbackContext):
-    increase_like()
-    likes, dislikes = get_data()
+    likes, dislikes = increase_like()
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
-
 def dislike(update: Update, context: CallbackContext):
-    increase_dislike()
-    likes, dislikes = get_data()
+    likes, dislikes = increase_dislike()
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
