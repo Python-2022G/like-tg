@@ -1,4 +1,5 @@
 import os
+import json
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import (
     Updater,
@@ -10,27 +11,51 @@ from telegram.ext import (
 
 TOKEN = os.environ['TOKEN']
 
-likes = 0
-dislikes = 0
-
 keyboard = [
         ['👍', '👎']
     ]
+
+
+def get_data():
+    with open('data.json') as f:
+        data = json.loads(f.read())
+    
+    likes = data['likes']
+    dislikes = data['dislikes']
+    return likes, dislikes
+
+
+def increase_like():
+    with open('data.json') as f:
+        data = json.loads(f.read())
+        data['likes'] += 1
+    with open('data.json', 'w') as f:
+        f.write('')
+        f.write(json.dumps(data, indent=4))
+
+
+def increase_dislike():
+    with open('data.json') as f:
+        data = json.loads(f.read())
+        data['dislikes'] += 1
+    with open('data.json', 'w') as f:
+        f.write('')
+        f.write(json.dumps(data, indent=4))
 
 def start(update: Update, context: CallbackContext):
     update.message.reply_html(text="<b>Assalomu alaylum!</b>\n\n<i>like botga xush kelibsiz!!</i>", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 def like(update: Update, context: CallbackContext):
-    global likes
-    likes += 1
+    increase_like()
+    likes, dislikes = get_data()
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 
 def dislike(update: Update, context: CallbackContext):
-    global dislikes
-    dislikes += 1
+    increase_dislike()
+    likes, dislikes = get_data()
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
