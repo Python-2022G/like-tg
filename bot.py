@@ -34,6 +34,10 @@ def dislike(update: Update, context: CallbackContext):
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
+def default(update: Update, context: CallbackContext):
+    update.message.reply_html(text="iltimos buttonlardan birini bosing!", \
+        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
+
 def main():
     updater = Updater(token=TOKEN)
     dp = updater.dispatcher
@@ -42,6 +46,8 @@ def main():
 
     dp.add_handler(handler=MessageHandler(filters=filters.Filters.text('👍'), callback=like))
     dp.add_handler(handler=MessageHandler(filters=filters.Filters.text('👎'), callback=dislike))
+
+    dp.add_handler(handler=MessageHandler(filters=filters.Filters.all, callback=default))
 
     updater.start_polling()
     updater.idle()
