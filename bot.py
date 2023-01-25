@@ -19,20 +19,20 @@ keyboard = [
 
 def start(update: Update, context: CallbackContext):
     update.message.reply_html(text="<b>Assalomu alaylum!</b>\n\n<i>like botga xush kelibsiz!!</i>", \
-        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard))
+        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 def like(update: Update, context: CallbackContext):
     global likes
     likes += 1
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
-        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard))
+        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 
 def dislike(update: Update, context: CallbackContext):
     global dislikes
     dislikes += 1
     update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
-        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard))
+        reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 def main():
     updater = Updater(token=TOKEN)
