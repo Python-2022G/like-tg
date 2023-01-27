@@ -14,7 +14,6 @@ class DB:
 
     def save(self):
         with open('db.json', 'w') as f:
-            f.write('')
             f.write(json.dumps(self.data, indent=4))
 
     def add_user(self, user_id: str):
