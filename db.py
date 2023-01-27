@@ -17,11 +17,12 @@ class DB:
             f.write(json.dumps(self.data, indent=4))
 
     def add_user(self, user_id: str):
-        self.data[user_id] = {
-            'like': 0,
-            'dislike': 0
-        }
-        self.save()
+        if user_id not in self.data:
+            self.data[user_id] = {
+                'like': 0,
+                'dislike': 0
+            }
+            self.save()
     
     def increase_like(self, user_id: str):
         self.data[user_id]['like'] += 1
@@ -35,12 +36,8 @@ class DB:
         return self.data[user_id]
 
 
-db = DB()
-db.increase_like('51514352')
-db.increase_like('51514352')
-db.increase_like('51514352')
-db.increase_like('51514352')
-db.increase_like('51514352')
-print(db.get_data())
+# db = DB()
+# db.increase_like('32412414')
+# print(db.get_data())
 
 

@@ -1,5 +1,4 @@
 import os
-import json
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import (
     Updater,
@@ -8,47 +7,36 @@ from telegram.ext import (
     MessageHandler,
     filters
 )
+from db import DB
 
 TOKEN = os.environ['TOKEN']
 
 keyboard = [
-        ['👍', '👎']
-    ]
-
-
-def increase_like():
-    with open('data.json') as f:
-        data = json.loads(f.read())
-        data['likes'] += 1
-    with open('data.json', 'w') as f:
-        f.write('')
-        f.write(json.dumps(data, indent=4))
-
-    return data['likes'], data['dislikes']
-
-def increase_dislike():
-    with open('data.json') as f:
-        data = json.loads(f.read())
-        data['dislikes'] += 1
-    with open('data.json', 'w') as f:
-        f.write('')
-        f.write(json.dumps(data, indent=4))
-    
-    return data['likes'], data['dislikes']
+    ['👍', '👎']
+]
+db = DB()
 
 def start(update: Update, context: CallbackContext):
+    user_id = update.message.chat.id
+    db.add_user(user_id=str(user_id))
     update.message.reply_html(text="<b>Assalomu alaylum!</b>\n\n<i>like botga xush kelibsiz!!</i>", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
 def like(update: Update, context: CallbackContext):
-    likes, dislikes = increase_like()
-    update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
+    user_id = update.message.chat.id
+    db.increase_like(user_id=str(user_id))
+    data = db.get_likes(user_id=str(user_id))
+    update.message.reply_html(text=f"<b>like:</b> {data['like']}\n<b>dislike:</b> {data['dislike']}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
 
+
 def dislike(update: Update, context: CallbackContext):
-    likes, dislikes = increase_dislike()
-    update.message.reply_html(text=f"<b>like:</b> {likes}\n<b>dislike:</b> {dislikes}", \
+    user_id = update.message.chat.id
+    db.increase_dislike(user_id=str(user_id))
+    data = db.get_likes(user_id=str(user_id))
+    update.message.reply_html(text=f"<b>like:</b> {data['like']}\n<b>dislike:</b> {data['dislike']}", \
         reply_markup=ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True))
+
 
 def default(update: Update, context: CallbackContext):
     update.message.reply_html(text="iltimos buttonlardan birini bosing!", \
