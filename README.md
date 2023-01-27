@@ -72,3 +72,15 @@ echo $TOKEN
 - R (read) 
 - U (update) 
 - D (delete) 
+
+
+/db.py
+### DB class
+properties
+- db
+
+methods
+- add_user
+- increase_like
+- increase_dislike
+- get_data
