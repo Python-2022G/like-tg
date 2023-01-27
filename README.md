@@ -65,3 +65,10 @@ echo $TOKEN
     }
 }
 ```
+
+
+### data base CRUD
+- C (create) 
+- R (read) 
+- U (update) 
+- D (delete) 
